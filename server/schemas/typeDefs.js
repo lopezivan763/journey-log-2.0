@@ -11,7 +11,7 @@ const typeDefs = `
     _id: ID!
     title : String!
     body: String!
-    author: ID!
+    author: String
     comments: [Comment]!
   }
 
@@ -42,6 +42,7 @@ const typeDefs = `
     createPost(title: String!, body: String!): User
     removePost(postId: ID!): User
     addComment(postId: ID!, commentText: String!): Post
+    deleteComment(postId: ID!, commentId: ID!): Post
   }
   `;
 
