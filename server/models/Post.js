@@ -1,4 +1,5 @@
-const { Schema, Types } = require('mongoose');
+const { Schema, model } = require('mongoose');
+const dateFormat = require('../utils/dateFormat');
 
 const postSchema = new Schema(
   {
@@ -11,9 +12,14 @@ const postSchema = new Schema(
       required: true,
     },
     author: {
-      type: Types.ObjectId, 
-      ref: 'User', 
+      type: String,
       required: true,
+      trim: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (timestamp) => dateFormat(timestamp),
     },
     comments: [
       {
@@ -34,8 +40,8 @@ const postSchema = new Schema(
         },
       },
     ],
-  },
-  { timestamps: true }
-);
+  });
 
-module.exports = postSchema;
+  const Post = model('Post', postSchema);
+
+module.exports = Post;
