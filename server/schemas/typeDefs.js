@@ -12,7 +12,7 @@ const typeDefs = `
     title : String!
     body: String!
     author: ID!
-    comments: [Comment]
+    comments: [Comment]!
   }
 
   type Comment {
@@ -31,15 +31,16 @@ const typeDefs = `
   type Query {
     users: [User]
     user(username: String!): User
-    me: User
     post(id: ID!): Post
     posts(username: String): [Post]
+    me: User
   }
 
   type Mutation {
-    login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
+    login(email: String!, password: String!): Auth
     createPost(title: String!, body: String!): User
+    removePost(postId: ID!): User
     addComment(postId: ID!, commentText: String!): Post
   }
   `;
