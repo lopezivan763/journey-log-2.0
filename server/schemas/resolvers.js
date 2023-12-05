@@ -16,6 +16,9 @@ const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in!");
     },
+    post: async (parent, { postId }) => {
+      return Post.findOne({ _id: postId });
+    },
     posts: async (parent, { username }) => {
       if (username) {
         return Post.find({ author: username });
@@ -72,7 +75,26 @@ const resolvers = {
         throw new AuthenticationError("Failed to create a post!");
       }
     },
+    addComment: async (parent, { postId, commentText }, context) => {
+      if (context.user) {
+        return Post.findByIdAndUpdate(
+          { _id: postId },
+          {
+            $addToSet: { 
+              comments: { commentText, commentAuthor: context.user.username },
+            },
+          },
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+      }
+      throw AuthenticationError;
+    },
   },
 };
+
+
 
 module.exports = resolvers;
