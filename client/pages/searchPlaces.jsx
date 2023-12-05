@@ -5,13 +5,13 @@ import { savePlaceIds, getSavedPlacesIds } from '../src/utils/localStorage';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 
-const SearchPlaces = () => {
-    const [searchedPlaces, setSearchedPlaces] = useState([]);
+const SearchPosts = () => {
+    const [searchedPosts, setSearchedPosts] = useState([]);
     const [searchInput, setSearchInput] = useState('');
-    const [savedPlaceIds, setSavedPlaceIds] = useState(getSavedPlacesIds());
+    const [savedPostIds, setSavedPostIds] = useState(getSavedPlacesIds());
 
     useEffect(() => {
-        return () => savePlaceIds(savedPlaceIds);
+        return () => savePlaceIds(savedPostIds);
     });
 
     const handleFormSubmit = async (event) => {
@@ -30,21 +30,21 @@ const SearchPlaces = () => {
         }
         const { items } = await response.json();
 
-        const placeData = items.map((place) => ({
-            title: place.title,
-            body: place.body,
-            author: place.author,
-            comments: place.comments,
+        const postData = items.map((post) => ({
+            title: post.title,
+            body: post.body,
+            author: post.author,
+            comments: post.comments,
         }));
-        setSearchedPlaces(placeData);
+        setSearchedPosts(postData);
         setSearchInput('');
         } catch (err) {
             console.error(err);
         }
     };
 
-    const handleSavePlace = async (placeId) => {
-        const placeToSave = searchedPlaces.find((place) => place.placeId === placeId);
+    const handleSavePost = async (postId) => {
+        const postToSave = searchedPosts.find((post) => post.postId === postId);
 
         const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -54,10 +54,10 @@ const SearchPlaces = () => {
 
         try {
             await savePlaceIds({
-                variables: { newPlace: {...placeToSave} },
+                variables: { newPost: {...postToSave} },
             });
 
-            setSavedPlaceIds([...savedPlaceIds, placeToSave.placeId]);
+            setSavedPostIds([...savedPostIds, postToSave.postId]);
         } catch (err) {
             console.error(err);
         }
@@ -67,7 +67,7 @@ const SearchPlaces = () => {
         <>
         <div fluid className='text-light bg-dark'>
             <Container>
-                <h1>Search for Places!</h1>
+                <h1>Search for Posts!</h1>
                 <Form onSubmit={handleFormSubmit}>
                     <Form.Row>
                         <Col xs={12} md={8}>
@@ -92,18 +92,41 @@ const SearchPlaces = () => {
                                     
                                     <Container>
                                         <h2>
-                                            {searchedPlaces.length
-                                            ? `Viewing ${searchedPlaces.length} results:`
-                                        : 'search for a place to begin'}
+                                            {searchedPosts.length
+                                            ? `Viewing ${searchedPosts.length} results:`
+                                        : 'search for a post to begin'}
                                             </h2>
                                             <CardColumns>
-                                                {searchedPlaces.map((book) => {
+                                                {searchedPosts.map((book) => {
                                                     return (
-                                                        <Card key={place.placeId} border='dark'>
+                                                        <Card key={post.postId} border='dark'>
                                                         <Card.Body>
-                                                            <Card.Title>{place.title}</Card.Title>
-                                                            <p className='small'>Author: {place.author}</p>
+                                                            <Card.Title>{post.title}</Card.Title>
+                                                            <p className='small'>Author: {post.author}</p>
+                                                            {Auth.loggedIn() && (
+                                                                <Button
+                                                                disabled={savedPostIds?.some(
+                                                                    savedPostId => savedPostId === post.postId
+                                                                )}
+                                                                className='btn-block bt-info'
+                                                                onClick={() => handleSavePost(post.postId)}
+                                                                >
+                                                                    {savedPostIds?.some(
+                                                                        savedPostId => savedPostId === post.postId
+                                                                    )
+                                                                    ? "This post has already been saved!"
+                                                                : "Save this post!"}
+                                                                </Button>
+                                                            )}
                                                         </Card.Body>
-                                                        </Card></CardColumns></Container></>
-    )
-}
+                                                        </Card>
+                                                    );
+                                                                    })}
+                                                                    </CardColumns>
+                                                                    </Container>
+                                                                    </>
+
+    );
+};
+
+export default SearchPlaces

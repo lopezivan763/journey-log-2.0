@@ -5,7 +5,7 @@ import { QUERY_ME } from '../src/utils/queries';
 import Auth from '../src/utils/auth';
 import { removePlaceId } from '../src/utils/localStorage';
 
-const SavedPlaces = () => {
+const SavedPosts = () => {
     const { loading, data } = useQuery(QUERY_ME);
     const userData = data?.me || {};
 
@@ -18,7 +18,7 @@ const SavedPlaces = () => {
     }
 }
 
-    const handleDeletePlace = async (placeId) => {
+    const handleDeletePost = async (postId) => {
         const token = Auth.loggedIn() ? Auth.getToken() : null;
 
         if(!token) {
@@ -26,19 +26,19 @@ const SavedPlaces = () => {
         }
 
         try {
-            await deletePlace({
-                variables: {placeId: placeId},
+            await deletePost({
+                variables: {postId: postId},
                 update: cache => {
                     const data = cache.readQuery({ query: QUERY_ME });
                     const userDataCache = data.me;
-                    const savedPlacesCache = userDataCache.savedPlaces;
-                    const updatedPlaceCache = savedPlacesCache.filter((place) => place.placeId !== placeId);
-                    data.me.savedPlaces = updatedPlaceCache;
-                    cache.writeQuery({ query: GET_ME, data: {data: {...data.me.savedPlaces}}})
+                    const savedPostCache = userDataCache.savedPosts;
+                    const updatedPostCache = savedPostCache.filter((place) => place.placeId !== placeId);
+                    data.me.savedPosts = updatedPostCache;
+                    cache.writeQuery({ query: GET_ME, data: {data: {...data.me.savedPosts}}})
                 }
             });
 
-            removePlaceId(placeId);
+            removePlaceId(postId);
         } catch (err) {
             console.error(err);
         }
@@ -51,25 +51,25 @@ const SavedPlaces = () => {
         <>
         <div fluid className='text-light bg-dark'>
             <Container>
-                <h1>Viewing saved places!</h1>
+                <h1>Viewing saved posts!</h1>
                 </Container>
                 </div>
                 <Container>
                     <h2>
-                        {userData.savedPlaces.length 
-                        ? `Viewing ${userData.savedPlaces.length} saved ${userData.savedPlaces.length === 1 ? 'book' : 'books'}:`
-                        : 'You have no saved places!'}
+                        {userData.savedPosts.length 
+                        ? `Viewing ${userData.savedPosts.length} saved ${userData.savedPosts.length === 1 ? 'post' : 'posts'}:`
+                        : 'You have no saved posts!'}
                         </h2>
                         <CardColumns>
-                            {userData.savedPlaces.map((place) => {
+                            {userData.savedPosts.map((post) => {
                                 return (
-                                    <Card key={place.placeId} border='dark'>
+                                    <Card key={post.potId} border='dark'>
                                         <Card.Body>
-                                            <Card.Title>{place.title}</Card.Title>
-                                            <p className='small'>Authors: {place.authors}</p>
-                                            {place.link ? <Card.Text><a href={place.link} target="blank">More Information</a></Card.Text> : null}
-                                            <Button className='btn-block btn-danger' onClick={() => handleDeletePlace(place.placeId)}>
-                                                Delete this Place
+                                            <Card.Title>{post.title}</Card.Title>
+                                            <p className='small'>Authors: {post.authors}</p>
+                                            {post.link ? <Card.Text><a href={post.link} target="blank">More Information</a></Card.Text> : null}
+                                            <Button className='btn-block btn-danger' onClick={() => handleDeletePost(post.postId)}>
+                                                Delete this Post
                                             </Button>
                                         </Card.Body>
                                     </Card>
@@ -84,4 +84,4 @@ const SavedPlaces = () => {
     )
 
 
-export default SavedPlaces
+export default SavedPosts
