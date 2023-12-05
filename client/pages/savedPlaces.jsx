@@ -1,12 +1,14 @@
 import React from 'react';
 import { Card, Container, Button, CardColumns } from "reactstrap"
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_ME } from '../src/utils/queries';
+import { REMOVE_POST} from '../src/utils/mutations'
 import Auth from '../src/utils/auth';
-import { removePlaceId } from '../src/utils/localStorage';
+import { removePostId } from '../src/utils/localStorage';
 
 const SavedPosts = () => {
     const { loading, data } = useQuery(QUERY_ME);
+    const[removePost, { error }] = useMutation(REMOVE_POST);
     const userData = data?.me || {};
 
     if(!userData?.email) {
@@ -32,20 +34,20 @@ const SavedPosts = () => {
                     const data = cache.readQuery({ query: QUERY_ME });
                     const userDataCache = data.me;
                     const savedPostCache = userDataCache.savedPosts;
-                    const updatedPostCache = savedPostCache.filter((place) => place.placeId !== placeId);
+                    const updatedPostCache = savedPostCache.filter((post) => post.postId !== postId);
                     data.me.savedPosts = updatedPostCache;
                     cache.writeQuery({ query: GET_ME, data: {data: {...data.me.savedPosts}}})
                 }
             });
 
-            removePlaceId(postId);
+            removePostId(postId);
         } catch (err) {
             console.error(err);
         }
     };
     if(loading) {
         return <h2>LOADING...</h2>;
-    }
+    };
 
     return (
         <>

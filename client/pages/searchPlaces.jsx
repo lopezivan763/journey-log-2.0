@@ -1,17 +1,17 @@
 import React, { useState, useEffect} from 'react';
 import { Container, Col, Form, Button, Card, CardColumns } from 'reactstrap';
 import Auth from '../src/utils/auth';
-import { savePlaceIds, getSavedPlacesIds } from '../src/utils/localStorage';
+import { savePostIds, getSavedPostsIds } from '../src/utils/localStorage';
 import { useMutation } from '@apollo/client';
-import { LOGIN_USER } from '../utils/mutations';
+
 
 const SearchPosts = () => {
     const [searchedPosts, setSearchedPosts] = useState([]);
     const [searchInput, setSearchInput] = useState('');
-    const [savedPostIds, setSavedPostIds] = useState(getSavedPlacesIds());
+    const [savedPostIds, setSavedPostIds] = useState(getSavedostsIds());
 
     useEffect(() => {
-        return () => savePlaceIds(savedPostIds);
+        return () => savePostIds(savedPostIds);
     });
 
     const handleFormSubmit = async (event) => {
@@ -53,7 +53,7 @@ const SearchPosts = () => {
         }
 
         try {
-            await savePlaceIds({
+            await savePostIds({
                 variables: { newPost: {...postToSave} },
             });
 
@@ -129,4 +129,4 @@ const SearchPosts = () => {
     );
 };
 
-export default SearchPlaces
+export default SearchPosts
