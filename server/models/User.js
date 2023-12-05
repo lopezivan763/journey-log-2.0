@@ -1,8 +1,6 @@
 const {Schema, model } = require('mongoose');
 const  bcrypt = require('bcrypt');
 
-const postSchema = require('./Post')
-
 const userSchema = new Schema(
     {
         username: {
@@ -21,14 +19,11 @@ const userSchema = new Schema(
             required: true,
           },
 
-          posts: [postSchema],
-    },
-    {
-        toJSON:{
-            getters: true,
-        }
-    }
-);
+          posts: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Post',
+          },],
+    });
 
 userSchema.pre('save', async function (next) {
     if (this.isNew || this.isModified('password')) {
