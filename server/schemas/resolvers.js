@@ -1,5 +1,4 @@
 const { User, Post } = require("../models"); // Make sure to import the Post model
-const { post } = require("../models/Post");
 const { signToken, AuthenticationError } = require("../utils/auth");
 
 const resolvers = {
@@ -8,23 +7,23 @@ const resolvers = {
       return User.find().populate("posts");
     },
     user: async (parent, { username }) => {
-      return User.findOne({ username });
+      return User.findOne({ username }).populate('posts');
     },
     me: async (parent, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id });
+        return User.findOne({ _id: context.user._id }).populate('posts');
       }
       throw new AuthenticationError("You need to be logged in!");
     },
-    post: async (parent, { postId }) => {
-      return Post.findOne({ _id: postId });
-    },
-    posts: async (parent, { username }) => {
-      if (username) {
-        return Post.find({ author: username });
-      }
-      return Post.find();
-    },
+    // post: async (parent, { postId }) => {
+    //   return Post.findById({ _id: postId });
+    // },
+    // posts: async (parent, { username }) => {
+    //   if (username) {
+    //     return Post.find({ author: username });
+    //   }
+    //   return Post.find();
+    // },
   },
   Mutation: {
     addUser: async (parent, { username, email, password }) => {
@@ -75,9 +74,28 @@ const resolvers = {
         throw new AuthenticationError("Failed to create a post!");
       }
     },
+    removePost: async (parent, { postId }, context) => {
+      try{
+        // const post = await Post.findOneAndDelete({
+        //   _id: postId,
+        //   postAuthor: context.user.username,
+        // });
+
+        return await User.findOneAndUpdate( 
+          { _id: context.user._id },
+          { $pull: { posts: postId } }
+        );
+       
+      }
+      catch (error) {
+        console.error(error);
+        throw new AuthenticationError("Failed to delete a post!");
+      }
+    },
+
     addComment: async (parent, { postId, commentText }, context) => {
       if (context.user) {
-        return Post.findByIdAndUpdate(
+        return Post.findOneAndUpdate(
           { _id: postId },
           {
             $addToSet: { 
