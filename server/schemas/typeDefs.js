@@ -12,12 +12,15 @@ const typeDefs = `
     title : String!
     body: String!
     author: ID!
+    comments: [Comment]
   }
 
   type Comment {
-    id: ID!
-    text: String!
-    post: Post!
+    _id: ID
+    commentText: String
+    commentAuthor: String
+    createdAt: String
+
   }
 
   type Auth {
@@ -37,7 +40,7 @@ const typeDefs = `
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
     createPost(title: String!, body: String!): User
-    addComment(text: String!, postId: ID!): Comment
+    addComment(postId: ID!, commentText: String!): Post
   }
   `;
 
