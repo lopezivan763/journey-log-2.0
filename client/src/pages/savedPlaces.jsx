@@ -1,86 +1,111 @@
-import React from 'react';
-import { Card, Container, Button, CardColumns } from "reactstrap"
-import { useQuery, useMutation } from '@apollo/client';
-import { QUERY_ME } from '../src/utils/queries';
-import { REMOVE_POST} from '../src/utils/mutations'
-import Auth from '../src/utils/auth';
-import { removePostId } from '../src/utils/localStorage';
+import { useState, useEffect } from 'react';
+import {
+  Container,
+  Card,
+  Button,
+  Row,
+  Col
+} from 'react-bootstrap';
 
-const SavedPosts = () => {
-    const { loading, data } = useQuery(QUERY_ME);
-    const[removePost, { error }] = useMutation(REMOVE_POST);
-    const userData = data?.me || {};
+import { getMe, deletePlace } from '../utils/API';
+import Auth from '../utils/auth';
+import { removePlaceId } from '../utils/localStorage';
 
-    if(!userData?.email) {
-        return (
-            <h4>
-            You need to be logged in!
-            </h4>
-        );
-    }
-}
+const SavedBooks = () => {
+  const [userData, setUserData] = useState({});
 
-    const handleDeletePost = async (postId) => {
+  // use this to determine if `useEffect()` hook needs to run again
+  const userDataLength = Object.keys(userData).length;
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
         const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-        if(!token) {
-            return false;
+        if (!token) {
+          return false;
         }
 
-        try {
-            await removePost({
-                variables: {postId: postId},
-            });
-            console.log('Deleted post: ', response);
-            if (error) {
-                console.log(error);
-            }
+        const response = await getMe(token);
 
-
-            removePostId(postId);
-        } catch (err) {
-            console.error(err);
+        if (!response.ok) {
+          throw new Error('something went wrong!');
         }
+
+        const user = await response.json();
+        setUserData(user);
+      } catch (err) {
+        console.error(err);
+      }
     };
-    if(loading) {
-        return <h2>LOADING...</h2>;
-    };
 
-    return (
-        <>
-        <div fluid className='text-light bg-dark'>
-            <Container>
-                <h1>Viewing saved posts!</h1>
-                </Container>
-                </div>
-                <Container>
-                    <h2>
-                        {userData.savedPosts.length 
-                        ? `Viewing ${userData.savedPosts.length} saved ${userData.savedPosts.length === 1 ? 'post' : 'posts'}:`
-                        : 'You have no saved posts!'}
-                        </h2>
-                        <CardColumns>
-                            {userData.savedPosts.map((post) => {
-                                return (
-                                    <Card key={post.potId} border='dark'>
-                                        <Card.Body>
-                                            <Card.Title>{post.title}</Card.Title>
-                                            <p className='small'>Authors: {post.authors}</p>
-                                            {post.link ? <Card.Text><a href={post.link} target="blank">More Information</a></Card.Text> : null}
-                                            <Button className='btn-block btn-danger' onClick={() => handleDeletePost(post.postId)}>
-                                                Delete this Post
-                                            </Button>
-                                        </Card.Body>
-                                    </Card>
-                                );
-                            }
-                            )
-                        }
-                            
-                            </CardColumns>
-                            </Container>
-                            </>
-    )
+    getUserData();
+  }, [userDataLength]);
 
+  // create function that accepts the book's mongo _id value as param and deletes the book from the database
+  const handleDeletePlace = async (placeId) => {
+    const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-export default SavedPosts
+    if (!token) {
+      return false;
+    }
+
+    try {
+      const response = await deletePlace(placeId, token);
+
+      if (!response.ok) {
+        throw new Error('something went wrong!');
+      }
+
+      const updatedUser = await response.json();
+      setUserData(updatedUser);
+      // upon success, remove book's id from localStorage
+      removePlaceId(placeId);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // if data isn't here yet, say so
+  if (!userDataLength) {
+    return <h2>LOADING...</h2>;
+  }
+
+  return (
+    <>
+      <div fluid className="text-light bg-dark p-5">
+        <Container>
+          <h1>Viewing saved locations!</h1>
+        </Container>
+      </div>
+      <Container>
+        <h2 className='pt-5'>
+          {userData.savedPlaces.length
+            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedPlaces.length === 1 ? 'place' : 'places'}:`
+            : 'You have no saved places!'}
+        </h2>
+        <Row>
+          {userData.savedBooks.map((book) => {
+            return (
+              <Col md="4">
+                <Card key={place.placeId} border='dark'>
+                  {place.image ? <Card.Img src={place.image} alt={`The cover for ${place.title}`} variant='top' /> : null}
+                  <Card.Body>
+                    <Card.Title>{place.title}</Card.Title>
+                    <p className='small'>Authors: {place.authors}</p>
+                    <Card.Text>{place.description}</Card.Text>
+                    <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(place.placeId)}>
+                      Delete this Book!
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+          })}
+        </Row>
+      </Container>
+    </>
+  );
+};
+
+export default SavedBooks;
