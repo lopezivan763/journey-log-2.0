@@ -11,7 +11,8 @@ const typeDefs = `
     _id: ID!
     title : String!
     body: String!
-    author: ID!
+    author: String
+    createdAt: String
     comments: [Comment]!
   }
 
@@ -31,7 +32,7 @@ const typeDefs = `
   type Query {
     users: [User]
     user(username: String!): User
-    post(id: ID!): Post
+    post(postId: ID!): Post
     posts(username: String): [Post]
     me: User
   }
@@ -42,6 +43,7 @@ const typeDefs = `
     createPost(title: String!, body: String!): User
     removePost(postId: ID!): User
     addComment(postId: ID!, commentText: String!): Post
+    deleteComment(postId: ID!, commentId: ID!): Post
   }
   `;
 

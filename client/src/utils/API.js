@@ -32,7 +32,7 @@ export const getMe = (token) => {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            authorization: 'Bearer ${token}',
+            authorization: `Bearer ${token}`,
         }
     })
   }

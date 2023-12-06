@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Card, CardHeader, CardBody, Button, CardTitle, CardText, Form,FormGroup, Label, Input } from "reactstrap"
+
 
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
@@ -123,7 +125,6 @@ const Signup = () => {
                     </CardText>
                 </CardBody>
             </Card>
-
         </main>
     );
 };

@@ -9,21 +9,19 @@ const resolvers = {
     user: async (parent, { username }) => {
       return User.findOne({ username }).populate('posts');
     },
-    me: async (parent, context) => {
+    me: async (parent, args, context) => {
       if (context.user) {
         return User.findOne({ _id: context.user._id }).populate('posts');
       }
-      throw new AuthenticationError("You need to be logged in!");
+      throw AuthenticationError;
     },
-    // post: async (parent, { postId }) => {
-    //   return Post.findById({ _id: postId });
-    // },
-    // posts: async (parent, { username }) => {
-    //   if (username) {
-    //     return Post.find({ author: username });
-    //   }
-    //   return Post.find();
-    // },
+    post: async (parent, { postId }) => {
+      return Post.findOne({ _id: postId });
+    },
+    posts: async (parent, { username }) => {
+      const params = username ? { username } : {};
+      return Post.find(params).sort({ createdAt: -1 });
+    },
   },
   Mutation: {
     addUser: async (parent, { username, email, password }) => {
@@ -49,48 +47,40 @@ const resolvers = {
       return { token, user };
     },
     createPost: async (parent, { title, body}, context) => {
-      try {
-        
-        // Update the user's posts array to include the new post
-        const post = {
+      if (context.user) {
+        const post = await Post.create({
           title,
           body,
-          author: context.user._id
-        }
-        const newUserPost = await User.findByIdAndUpdate({
-          _id: context.user._id
-        },
-          { $push: { posts: post } }, // Change 'post' to an object containing the post details
-          { new: true }
-        );
+          author: context.user.username,
+        });
 
-        console.log(newUserPost);
-
-
-        return newUserPost;
-
-      } catch (error) {
-        console.error(error);
-        throw new AuthenticationError("Failed to create a post!");
-      }
-    },
-    removePost: async (parent, { postId }, context) => {
-      try{
-        // const post = await Post.findOneAndDelete({
-        //   _id: postId,
-        //   postAuthor: context.user.username,
-        // });
-
-        return await User.findOneAndUpdate( 
+        await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $pull: { posts: postId } }
+          { $addToSet: { posts: post._id } }
         );
-       
+
+        console.log(post);
+        return post;
       }
-      catch (error) {
-        console.error(error);
-        throw new AuthenticationError("Failed to delete a post!");
+      throw AuthenticationError;
+      ('You need to be logged in!');
+    },
+
+    removePost: async (parent, { postId }, context) => {
+      if (context.user) {
+        const post = await Post.findOneAndDelete({
+          _id: postId,
+          author: context.user.username,
+        });
+
+        await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $pull: { posts: post._id } }
+        );
+
+        return post;
       }
+      throw AuthenticationError;
     },
 
     addComment: async (parent, { postId, commentText }, context) => {
@@ -98,7 +88,7 @@ const resolvers = {
         return Post.findOneAndUpdate(
           { _id: postId },
           {
-            $addToSet: { 
+            $addToSet: {
               comments: { commentText, commentAuthor: context.user.username },
             },
           },
@@ -110,9 +100,24 @@ const resolvers = {
       }
       throw AuthenticationError;
     },
+    deleteComment: async (parent, { postId, commentId }, context) => {
+      if (context.user) {
+        return Post.findOneAndUpdate(
+          { _id: postId },
+          {
+            $pull: {
+              comments: {
+                _id: commentId,
+                commentAuthor: context.user.username,
+              },
+            },
+          },
+          { new: true }
+        );
+      }
+      throw AuthenticationError;
+    },
   },
 };
-
-
 
 module.exports = resolvers;
