@@ -13,10 +13,10 @@ const Home = () => {
 
     return (
         <main>
-        <div className="flex-row justify-center">
+        <div className="flex-row justify-center mx-auto">
           <div
-            className="col-12 col-md-10 mb-3 p-3"
-            style={{ border: '1px dotted #1a1a1a' }}
+            className="col-12 col-md-10 mb-3 p-3 mx-auto"
+            style={{ border: '3px dotted #1a1a1a' }}
           >
             <PostForm />
           </div>

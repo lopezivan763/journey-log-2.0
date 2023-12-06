@@ -24,7 +24,7 @@ const Footer = () => {
           >
             ❤️
           </span>{' '}
-          by the Ivan Lopez, Max Blaul and Jack Neuman. 
+          by the Ivan Lopez, Max Blaul and Jackson Neuman. 
         </h4>
       </div>
     </footer>

@@ -44,21 +44,18 @@ const Login = (props) => {
     };
 
     return (
-        <main>
+        <main className="d-flex justify-content-center align-items-center min-vh-50">
             <Card
                 className="my-2"
-                color="primary"
+                color="success"
                 inverse
                 style={{
                     width: '18rem'
                 }}
             >
-                <CardHeader>
-                    Header
-                </CardHeader>
                 <CardBody>
                     <CardTitle tag="h5">
-                        Signup
+                        Login
                     </CardTitle>
                     <CardText>
                         {data ? (

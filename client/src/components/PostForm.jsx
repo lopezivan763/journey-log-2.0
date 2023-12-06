@@ -54,8 +54,9 @@ console.log(data);
   };
 
 return (
-  <div className='text-center'>
-  <h3>Journey entry</h3>
+<div className='text-center'>  
+<h3>Journey Entry</h3>
+
   
   {Auth.loggedIn() ? (
     <>
