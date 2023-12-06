@@ -32,6 +32,7 @@ export const ADD_POST = gql`
       title
       body
       author
+      createdAt
       comments {
         _id
         commentText
@@ -47,10 +48,12 @@ export const ADD_COMMENT = gql`
      title
       body
       author
+      createdAt
       comments {
         _id
         commentText
         commentAuthor
+        createdAt
       }
     }
   }

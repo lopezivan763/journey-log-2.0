@@ -10,6 +10,7 @@ export const QUERY_USER = gql`
         _id
         title
         body
+        createdAt
       }
     }
   }
@@ -22,6 +23,7 @@ export const QUERY_POSTS = gql`
       title
       body
       author
+      createdAt
     }
   }
 `;
@@ -30,13 +32,15 @@ export const QUERY_SINGLE_POST = gql`
   query getSinglePost($postId: ID!) {
     post(postId: $postId) {
       _id
-      titel
+      title
       body
       author
+      createdAt
       comments {
         _id
         commentText
         commentAuthor
+        createdAt
       }
     }
   }
@@ -53,6 +57,7 @@ export const QUERY_ME = gql`
         title
         body
         author
+        createdAt
       }
     }
   }
