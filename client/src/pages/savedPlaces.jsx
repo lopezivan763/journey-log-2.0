@@ -28,17 +28,14 @@ const SavedPosts = () => {
         }
 
         try {
-            await deletePost({
+            await removePost({
                 variables: {postId: postId},
-                update: cache => {
-                    const data = cache.readQuery({ query: QUERY_ME });
-                    const userDataCache = data.me;
-                    const savedPostCache = userDataCache.savedPosts;
-                    const updatedPostCache = savedPostCache.filter((post) => post.postId !== postId);
-                    data.me.savedPosts = updatedPostCache;
-                    cache.writeQuery({ query: GET_ME, data: {data: {...data.me.savedPosts}}})
-                }
             });
+            console.log('Deleted post: ', response);
+            if (error) {
+                console.log(error);
+            }
+
 
             removePostId(postId);
         } catch (err) {
