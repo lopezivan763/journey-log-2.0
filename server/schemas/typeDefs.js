@@ -12,6 +12,7 @@ const typeDefs = `
     title : String!
     body: String!
     author: String
+    createdAt: String
     comments: [Comment]!
   }
 

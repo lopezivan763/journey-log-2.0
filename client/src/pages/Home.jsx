@@ -25,7 +25,7 @@ const Home = () => {
               <div>Loading...</div>
             ) : (
               <PostList
-                thoughts={thoughts}
+                posts={posts}
                 title="Where will your journey take you?"
               />
             )}

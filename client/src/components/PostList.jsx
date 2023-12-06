@@ -15,32 +15,33 @@ const PostList = ({
       {showTitle && <h3>{title}</h3>}
       {posts &&
         posts.map((post) => (
-          <div key={thought._id} className="card mb-3">
+          <div key={post._id} className="card mb-3">
             <h4 className="card-header bg-primary text-light p-2 m-0">
               {showUsername ? (
                 <Link
                   className="text-light"
-                  to={`/profiles/${thought.thoughtAuthor}`}
+                  to={`/profiles/${post.author}`}
                 >
-                  {thought.thoughtAuthor} <br />
+                  {post.author} <br />
                   <span style={{ fontSize: '1rem' }}>
-                    had this thought on {thought.createdAt}
+                    had this thought on {post.createdAt}
                   </span>
                 </Link>
               ) : (
                 <>
                 <span style={{ fontSize: '1rem' }}>
-                  You had this thought on {thought.createdAt}
+                  You had this thought on {post.createdAt}
                 </span>
               </>
             )}
           </h4>
           <div className="card-body bg-light p-2">
-            <p>{thought.thoughtText}</p>
+            <h1>{post.title}</h1>
+            <h4>{post.body}</h4>
           </div>
           <Link
             className="btn btn-primary btn-block btn-squared"
-            to={`/thoughts/${thought._id}`}
+            to={`/posts/${post._id}`}
           >
             Join the discussion on this thought.
           </Link>

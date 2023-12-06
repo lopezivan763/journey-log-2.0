@@ -9,14 +9,14 @@ const resolvers = {
     user: async (parent, { username }) => {
       return User.findOne({ username }).populate('posts');
     },
-    me: async (parent, context) => {
+    me: async (parent, args, context) => {
       if (context.user) {
         return User.findOne({ _id: context.user._id }).populate('posts');
       }
-      throw new AuthenticationError("You need to be logged in!");
+      throw AuthenticationError;
     },
     post: async (parent, { postId }) => {
-      return Post.findById({ _id: postId });
+      return Post.findOne({ _id: postId });
     },
     posts: async (parent, { username }) => {
       const params = username ? { username } : {};
