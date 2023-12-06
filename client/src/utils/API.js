@@ -36,3 +36,27 @@ export const getMe = (token) => {
         }
     })
   }
+
+  const axios = require('axios');
+
+const options = {
+  method: 'GET',
+  url: 'https://maps-data.p.rapidapi.com/place.php',
+  params: {
+    business_id: '0x47f4eb87e91f866d:0x9629fabb993eb66',
+    country: 'fr',
+    lang: 'en',
+    place_id: 'ChIJk_grnPDq9EcRE7gOH9gAPZA'
+  },
+  headers: {
+    'X-RapidAPI-Key': '1715b24a43msh9b5023d4aa71c9bp108651jsn692826a37b09',
+    'X-RapidAPI-Host': 'maps-data.p.rapidapi.com'
+  }
+};
+
+try {
+	const response = await axios.request(options);
+	console.log(response.data);
+} catch (error) {
+	console.error(error);
+}
