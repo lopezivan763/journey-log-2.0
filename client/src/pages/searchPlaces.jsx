@@ -77,7 +77,7 @@ const SearchPosts = () => {
                             onChange={(e) => setSearchInput(e.target.value)}
                             type='text'
                             size='lg'
-                            placeholder='Search for a book'
+                            placeholder='Search for a place'
                             />
                             </Col>
                             <Col xs={12} md={4}>
