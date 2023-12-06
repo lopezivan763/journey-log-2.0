@@ -36,10 +36,10 @@ const Header = () => {
           ) : (
             <>
               <Button color="success"
-    size="lg" className='m-4' to="/login">
+    size="lg" className='m-4' to="/login" href="/login">
                 Login
               </Button>
-              <Button color="success" size="lg" className='m-4' to="/signup">
+              <Button color="success" size="lg" className='m-4' to="/signup" href="/signup">
                 Signup
               </Button>
             </>

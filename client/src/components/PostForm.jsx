@@ -50,7 +50,7 @@ const PostForm = () => {
 
 return (
 <div className='text-center'>  
-<h3>Journey entry</h3>
+<h3>Journey Entry</h3>
   
   {Auth.loggedIn() ? (
     <>
