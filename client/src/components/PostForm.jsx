@@ -12,7 +12,7 @@ const PostForm = () => {
 
   const [characterCount, setCharacterCount] = useState(0);
 
-  const [addPost, { error }] = useMutation
+  const [createPost, { error }] = useMutation
   (ADD_POST, {
     refetchQueries: [
       QUERY_POSTS,
@@ -26,7 +26,7 @@ const PostForm = () => {
     event.preventDefault();
 
     try {
-      const { data } = await addPost({
+      const { data } = await createPost({
         variables: {
           postText,
           author: Auth.getProfile().data.username,
@@ -49,9 +49,10 @@ const PostForm = () => {
   };
 
 return (
+  <div>
+  <h3>Journey entry</h3>
   <div className='text-center'>
-  <h3>Journey entry...</h3>
-
+  
   {Auth.loggedIn() ? (
     <>
       <p
