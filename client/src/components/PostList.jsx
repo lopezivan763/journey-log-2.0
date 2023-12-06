@@ -24,13 +24,13 @@ const PostList = ({
                 >
                   {post.author} <br />
                   <span style={{ fontSize: '1rem' }}>
-                    had this thought on {post.createdAt}
+                    Made this post on {post.createdAt}
                   </span>
                 </Link>
               ) : (
                 <>
                 <span style={{ fontSize: '1rem' }}>
-                  You had this thought on {post.createdAt}
+                  You made this post on {post.createdAt}
                 </span>
               </>
             )}
@@ -43,7 +43,7 @@ const PostList = ({
             className="btn btn-primary btn-block btn-squared"
             to={`/posts/${post._id}`}
           >
-            Join the discussion on this thought.
+            Join the discussion on this journey.
           </Link>
         </div>
       ))}
