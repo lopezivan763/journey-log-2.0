@@ -42,6 +42,7 @@ const SavedPosts = () => {
 
   return (
     <>
+
       <div fluid className='text-light bg-dark'>
         <Container>
           <h1>Viewing saved posts!</h1>
@@ -84,5 +85,4 @@ const SavedPosts = () => {
     </>
   );
 };
-
 export default SavedPosts;

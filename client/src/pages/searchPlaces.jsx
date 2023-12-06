@@ -20,6 +20,7 @@ const SearchPosts = () => {
     }
 
     try {
+
       const response = await fetch(
         `https://maps-data.p.rapidapi.com/geocoding.php?search=${searchInput}`
       );
@@ -43,16 +44,13 @@ const SearchPosts = () => {
       console.error(err);
     }
   };
-
   const handleSavePost = (postId) => {
     const postToSave = searchedPosts.find((post) => post.postId === postId);
-
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
       return false;
     }
-
     // Save the post ID to local storage
     savePostId(postId);
 
@@ -88,6 +86,7 @@ const SearchPosts = () => {
       </div>
 
       <Container>
+
         <h2>
           {searchedPosts.length
             ? `Viewing ${searchedPosts.length} results:`
@@ -122,5 +121,5 @@ const SearchPosts = () => {
     </>
   );
 };
-
 export default SearchPosts;
+

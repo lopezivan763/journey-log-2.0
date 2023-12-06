@@ -7,8 +7,9 @@ import { QUERY_POSTS, QUERY_ME } from '../utils/queries';
 
 import Auth from '../utils/auth';
 
+//bug fixed
 const PostForm = () => {
-  const [postText, setPostText] = useState('');
+  const [postData, setPostData] = useState({title: "", body: ""});
 
   const [characterCount, setCharacterCount] = useState(0);
 
@@ -24,16 +25,16 @@ const PostForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+    console.log(postData);
 
     try {
       const { data } = await createPost({
         variables: {
-          postText,
-          author: Auth.getProfile().data.username,
+          ...postData
         },
       });
-
-      setPostText('');
+console.log(data);
+      //setPostText('');
     } catch (err) {
       console.error(err);
     }
@@ -42,15 +43,19 @@ const PostForm = () => {
   const handleChange = (event) => {
     const { name, value } = event.target;
 
-    if (name === 'postText' && value.length <= 1000) {
-      setPostText(value);
+    if (value.length <= 1000) {
+     // setPostText(value);
+      setPostData({
+        ...postData,
+        [name]:value,
+      })
       setCharacterCount(value.length);
     }
   };
 
 return (
-<div className='text-center'>  
-<h3>Journey entry</h3>
+  <div className='text-center'>
+  <h3>Journey entry</h3>
   
   {Auth.loggedIn() ? (
     <>
@@ -67,9 +72,19 @@ return (
       >
         <div className="col-12 col-lg-9">
           <textarea
-            name="postText"
-            placeholder="My adventures..."
-            value={postText}
+            name="title"
+            placeholder="Title"
+            value={postData.title}
+            className="form-input w-100"
+            style={{ lineHeight: '1.5', resize: 'vertical' }}
+            onChange={handleChange}
+          ></textarea>
+        </div>
+        <div className="col-12 col-lg-9">
+          <textarea
+            name="body"
+            placeholder="Body"
+            value={postData.body}
             className="form-input w-100"
             style={{ lineHeight: '1.5', resize: 'vertical' }}
             onChange={handleChange}
