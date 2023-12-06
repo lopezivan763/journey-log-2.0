@@ -8,11 +8,11 @@ import { useMutation } from '@apollo/client';
 const SearchPosts = () => {
     const [searchedPosts, setSearchedPosts] = useState([]);
     const [searchInput, setSearchInput] = useState('');
-    const [savedPostIds, setSavedPostIds] = useState(getSavedostsIds());
+    const [savedPostIds, setSavedPostIds] = useState(getSavedPostsIds());
 
     useEffect(() => {
-        return () => savePostIds(savedPostIds);
-    });
+        savePostIds(savedPostIds);
+    }, [savedPostIds]);
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
@@ -22,7 +22,7 @@ const SearchPosts = () => {
         }
         try {
             const response = await fetch(
-                ``
+                `https://maps-data.p.rapidapi.com/geocoding.php?search=${searchInput}`
         );
 
         if (!response.ok) {
@@ -77,7 +77,7 @@ const SearchPosts = () => {
                             onChange={(e) => setSearchInput(e.target.value)}
                             type='text'
                             size='lg'
-                            placeholder='Search for a book'
+                            placeholder='Search for a place'
                             />
                             </Col>
                             <Col xs={12} md={4}>

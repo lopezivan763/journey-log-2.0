@@ -21,7 +21,10 @@ const SinglePost = () => {
       return <div>Loading...</div>;
     }
     return (
-      <div className="my-3">
+      <div className="my-3" color="primary"
+      outline
+      style={{
+        width: '18rem'}}>
         <h3 className="card-header bg-dark text-light p-2 m-0">
           {post.author} <br />
           <span style={{ fontSize: '1rem' }}>
