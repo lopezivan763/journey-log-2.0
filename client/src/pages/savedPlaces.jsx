@@ -1,111 +1,88 @@
-import { useState, useEffect } from 'react';
-import {
-  Container,
-  Card,
-  Button,
-  Row,
-  Col
-} from 'react-bootstrap';
+import React from 'react';
+import { Card, Container, Button, CardColumns } from 'reactstrap';
+import { useQuery } from '@apollo/client';
+import { QUERY_ME } from '../src/utils/queries';
+import Auth from '../src/utils/auth';
+import { removePostId } from '../src/utils/localStorage';
 
-import { getMe, deletePlace } from '../utils/API';
-import Auth from '../utils/auth';
-import { removePlaceId } from '../utils/localStorage';
+const SavedPosts = () => {
+  const { loading, data } = useQuery(QUERY_ME);
+  const userData = data?.me || {};
 
-const SavedBooks = () => {
-  const [userData, setUserData] = useState({});
+  if (!userData?.email) {
+    return (
+      <h4>
+        You need to be logged in!
+      </h4>
+    );
+  }
 
-  // use this to determine if `useEffect()` hook needs to run again
-  const userDataLength = Object.keys(userData).length;
-
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-        if (!token) {
-          return false;
-        }
-
-        const response = await getMe(token);
-
-        if (!response.ok) {
-          throw new Error('something went wrong!');
-        }
-
-        const user = await response.json();
-        setUserData(user);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    getUserData();
-  }, [userDataLength]);
-
-  // create function that accepts the book's mongo _id value as param and deletes the book from the database
-  const handleDeletePlace = async (placeId) => {
+  const handleDeletePost = (postId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
       return false;
     }
 
-    try {
-      const response = await deletePlace(placeId, token);
+    const updatedSavedPosts = userData.savedPosts.filter((post) => post.postId !== postId);
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
+    const updatedUserData = {
+      ...userData,
+      savedPosts: updatedSavedPosts,
+    };
 
-      const updatedUser = await response.json();
-      setUserData(updatedUser);
-      // upon success, remove book's id from localStorage
-      removePlaceId(placeId);
-    } catch (err) {
-      console.error(err);
-    }
+    removePostId(postId);
+
+    console.log('Deleted post:', postId, 'Updated userData:', updatedUserData);
   };
 
-  // if data isn't here yet, say so
-  if (!userDataLength) {
+  if (loading) {
     return <h2>LOADING...</h2>;
   }
 
   return (
     <>
-      <div fluid className="text-light bg-dark p-5">
+
+      <div fluid className='text-light bg-dark'>
         <Container>
-          <h1>Viewing saved locations!</h1>
+          <h1>Viewing saved posts!</h1>
         </Container>
       </div>
       <Container>
-        <h2 className='pt-5'>
-          {userData.savedPlaces.length
-            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedPlaces.length === 1 ? 'place' : 'places'}:`
-            : 'You have no saved places!'}
+        <h2>
+          {userData.savedPosts.length
+            ? `Viewing ${userData.savedPosts.length} saved ${
+                userData.savedPosts.length === 1 ? 'post' : 'posts'
+              }:`
+            : 'You have no saved posts!'}
         </h2>
-        <Row>
-          {userData.savedBooks.map((book) => {
+        <CardColumns>
+          {userData.savedPosts.map((post) => {
             return (
-              <Col md="4">
-                <Card key={place.placeId} border='dark'>
-                  {place.image ? <Card.Img src={place.image} alt={`The cover for ${place.title}`} variant='top' /> : null}
-                  <Card.Body>
-                    <Card.Title>{place.title}</Card.Title>
-                    <p className='small'>Authors: {place.authors}</p>
-                    <Card.Text>{place.description}</Card.Text>
-                    <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(place.placeId)}>
-                      Delete this Book!
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
+              <Card key={post.postId} border='dark'>
+                <Card.Body>
+                  <Card.Title>{post.title}</Card.Title>
+                  <p className='small'>Authors: {post.authors}</p>
+                  {post.link ? (
+                    <Card.Text>
+                      <a href={post.link} target='_blank' rel='noopener noreferrer'>
+                        More Information
+                      </a>
+                    </Card.Text>
+                  ) : null}
+                  <Button
+                    className='btn-block btn-danger'
+                    onClick={() => handleDeletePost(post.postId)}
+                  >
+                    Delete this Post
+                  </Button>
+                </Card.Body>
+              </Card>
             );
           })}
-        </Row>
+        </CardColumns>
       </Container>
     </>
   );
 };
-
-export default SavedBooks;
+export default SavedPosts;
