@@ -8,24 +8,25 @@ import { ADD_COMMENT } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const CommentForm = ({ postId }) => {
-    const [commentText, setCommentText] = useState('');
+    const [commentData, setCommentData] = useState({commentText: ''});
     const [characterCount, setCharacterCount] = useState(0);
 
     const [addComment, { error }] = useMutation(ADD_COMMENT);
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
+        console.log(commentData);
 
         try {
             const { data } = await addComment({
                 variables: {
-                    postId,
-                    commentText,
-                    commentAuthor: Auth.getProfile().data.username,
+                  postId: postId,
+                 ...commentData,
                 },
             });
+            console.log(data);
 
-            setCommentText('');
+            // setCommentData('');
         } catch (err) {
             console.error(err);
         }
@@ -34,8 +35,11 @@ const CommentForm = ({ postId }) => {
     const handleChange = (event) => {
         const { name, value } = event.target;
 
-        if (name === 'commentText' && value.length <= 280) {
-            setCommentText(value);
+        if ( value.length <= 280) {
+            setCommentData({
+              ...commentData,
+              [name]:value,
+            })
             setCharacterCount(value.length);
         }
     };
@@ -61,13 +65,12 @@ const CommentForm = ({ postId }) => {
               <textarea
                 name="commentText"
                 placeholder="Add your comment..."
-                value={commentText}
+                value={commentData.commentText}
                 className="form-input w-100"
                 style={{ lineHeight: '1.5', resize: 'vertical' }}
                 onChange={handleChange}
               ></textarea>
             </div>
-
             <div className="col-12 col-lg-3">
               <button className="btn btn-primary btn-block py-3" type="submit">
                 Add Comment

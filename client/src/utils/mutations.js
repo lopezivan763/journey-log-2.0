@@ -36,7 +36,6 @@ export const ADD_POST = gql`
       comments {
         _id
         commentText
-        commentAuthor
         createdAt
       }
     }
@@ -45,7 +44,7 @@ export const ADD_POST = gql`
 
 export const ADD_COMMENT = gql`
   mutation addComment($postId: ID!, $commentText: String!) {
-    addComment(commentId: $commentId, commentText: $commentText) {
+    addComment(postId: $postId, commentText: $commentText) {
       _id
      title
       body
@@ -54,7 +53,6 @@ export const ADD_COMMENT = gql`
       comments {
         _id
         commentText
-        commentAuthor
         createdAt
       }
     }
