@@ -21,36 +21,30 @@ const SinglePost = () => {
       return <div>Loading...</div>;
     }
     return (
-      <div className="my-3" color="primary"
-      outline
-      style={{
-        width: '18rem'}}>
-        <h3 className="card-header bg-dark text-light p-2 m-0">
-          {post.author} <br />
-          <span style={{ fontSize: '1rem' }}>
-            had this thought on {post.createdAt}
-          </span>
-        </h3>
-        <div className="bg-light py-4">
-          <blockquote
-            className="p-4"
-            style={{
-              fontSize: '1.5rem',
-              fontStyle: 'italic',
-              border: '2px dotted #1a1a1a',
-              lineHeight: '1.5',
-            }}
-          >
-            <h2>{post.title}</h2>
-            <h4>{post.body}</h4>
-          </blockquote>
-        </div>
-  
-        <div className="my-5">
-          <CommentList comments={post.comments} />
-        </div>
-        <div className="m-3 p-4" style={{ border: '1px dotted #1a1a1a' }}>
-          <CommentForm postId={post._id} />
+      <div className="container mt-5">
+        <div className="row justify-content-center">
+          <div className="col-md-8">
+            <div className="card bg-primary text-light border-rounded">
+              <h3 className="card-header p-2">
+                {post.author} <br />
+                <span style={{ fontSize: '1rem' }}>
+                  had this adventure on {post.createdAt}
+                </span>
+              </h3>
+              <div className="card-body p-4 bg-dark rounded text-primary py-4">
+                <blockquote className="p-4">
+                  <h2>{post.title}</h2>
+                  <h4 className="text-dark bg-light"style={{ border: '1px dotted #1a1a1a' }}>{post.body}</h4>
+                </blockquote>
+              </div>
+              <div className="my-5">
+                <CommentList comments={post.comments} />
+              </div>
+              <div className="m-3 p-4 bg-dark text-light">
+                <CommentForm postId={post._id} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

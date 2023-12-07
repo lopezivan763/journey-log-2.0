@@ -36,30 +36,31 @@ const Profile = () => {
 
   return (
     <div>
-      <div className="flex-row justify-center mb-3">
-        <h2 className="col-12 col-md-10 bg-dark text-light p-3 mb-5">
-          Viewing {userParam ? `${user.username}'s` : 'your'} profile.
-        </h2>
+    <div className="flex-row justify-center mb-3">
+      <h2 className="col-12 col-md-10 bg-primary text-light p-3 mb-5">
+        Viewing {userParam ? `${user.username}'s` : 'your'} profile.
+      </h2>
 
-        <div className="col-12 col-md-10 mb-5">
-          <PostList
-            posts={user.posts}
-            title={`${user.username}'s adventures...`}
-            showTitle={false}
-            showUsername={false}
-          />
-        </div>
-        {!userParam && (
-          <div
-            className="col-12 col-md-10 mb-3 p-3"
-            style={{ border: '1px dotted #1a1a1a' }}
-          >
-            <PostForm />
-          </div>
-        )}
+      <div className="col-12 col-md-10 mb-5">
+        <PostList
+          posts={user.posts}
+          title={`${user.username}'s adventures...`}
+          showTitle={false}
+          showUsername={false}
+          customStyles={{ backgroundColor: '#f4f4f4', padding: '20px', borderRadius: '8px' }}
+        />
       </div>
+      {!userParam && (
+        <div
+          className="col-12 col-md-10 mb-3 p-3"
+          style={{ border: '1px dotted #1a1a1a', backgroundColor: '#f4f4f4', borderRadius: '8px' }}
+        >
+          <PostForm />
+        </div>
+      )}
     </div>
-  );
+  </div>
+);
 };
 
 export default Profile;

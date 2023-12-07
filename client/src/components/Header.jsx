@@ -10,39 +10,43 @@ const Header = () => {
   };
 
   const headerStyle = {
-    backgroundImage: `url(${Banner})`, // Replace with the path to your image
+    backgroundImage: `linear-gradient(rgba(26, 26, 26, 0.9), rgba(260, 26, 26, 0.1)), url(${Banner})`, 
     backgroundSize: 'cover', // Ensure the image covers the entire header
     backgroundRepeat: 'no-repeat', // Do not repeat the image
+    padding: '20px', // Added padding for better spacing
+    position: 'relative', 
+    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)', // Box shadow effect
+    borderRadius: '10px', // Rounded corners for the card
   };
+
   return (
-    <header className="text-light mb-4 py-3 flex-row align-center" style={headerStyle}>
-      <div className="container flex-row justify-space-between-lg justify-center align-center">
+    <header className="text-light mb-4 py-3" style={headerStyle}>
+      <div className="container d-flex justify-content-between align-items-center">
         <div>
-          <Link className="text-dark" to="/">
-            <h1 className="m-0">Journey Log</h1>
+          <Link className="text-decoration-none" to="/">
+            <h1 className="m-0 text-dark">Journey Log</h1>
           </Link>
           <p className="m-0 text-dark">Share your travel experience with the world!</p>
         </div>
         <div>
           {Auth.loggedIn() ? (
-            <>
-              <Link className="btn btn-lg btn-info m-2" to="/me">
-                {Auth.getProfile().data.username}'s profile
+            <div className="d-flex align-items-center">
+              <Link className="btn btn-lg btn-secondary me-3" to="/me">
+                {Auth.getProfile().data.username}'s Profile
               </Link>
-              <button className="btn btn-lg btn-light m-2" onClick={logout}>
+              <Button color="danger" size="lg" onClick={logout}>
                 Logout
-              </button>
-            </>
+              </Button>
+            </div>
           ) : (
-            <>
-              <Button color="success"
-    size="lg" className='m-4' to="/login" href="/login">
+            <div className="d-flex">
+              <Button color="dark" size="lg" className="me-3" to="/login">
                 Login
               </Button>
-              <Button color="success" size="lg" className='m-4' to="/signup" href="/signup">
+              <Button color="dark" size="lg" to="/signup">
                 Signup
               </Button>
-            </>
+            </div>
           )}
         </div>
       </div>

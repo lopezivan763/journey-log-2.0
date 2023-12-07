@@ -73,8 +73,26 @@ p {
 body {
   margin: 0;
   padding: 0;
-  background-image: url('../public/background1.jpg'); /* Replace 'path/to/background.jpg' with the actual path to your image */
   background-size: cover;
   background-repeat: no-repeat;
-  background-attachment: fixed; /* Optional: Keep the background fixed while scrolling */
+  background-attachment: fixed;
+  animation: changeBackground 50s linear infinite; /* Adjust timing here */
+}
+
+@keyframes changeBackground {
+  0% {
+    background-image: linear-gradient(rgba(26, 26, 26, 0.2), rgba(26, 26, 26, 0.9)), url('../public/background1.jpg');
+  }
+  25% {
+    background-image: linear-gradient(rgba(26, 26, 26, 0.2), rgba(26, 26, 26, 0.9)), url('../public/background2.jpg');
+  }
+  50% {
+    background-image: linear-gradient(rgba(26, 26, 26, 0.2), rgba(26, 26, 26, 0.9)), url('../public/background3.jpg');
+  }
+  75% {
+    background-image: linear-gradient(rgba(26, 26, 26, 0.2), rgba(26, 26, 26, 0.9)), url('../public/background4.jpg');
+  }
+  100% {
+    background-image: linear-gradient(rgba(26, 26, 26, 0.2), rgba(26, 26, 26, 0.9)), url('../public/background5.jpg');
+  }
 }
