@@ -24,6 +24,12 @@ export const QUERY_POSTS = gql`
       body
       author
       createdAt
+      comments {
+        _id
+        commentText
+        commentAuthor
+        createdAt
+      }
     }
   }
 `;

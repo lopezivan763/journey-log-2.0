@@ -16,16 +16,16 @@ const Profile = () => {
   });
 
   const user = data?.me || data?.user || {};
-  // navigate to personal profile page if username is yours
   if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
     return <Navigate to="/me" />;
   }
+  
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!user?.username) {
+  if (!user.username) {
     return (
       <h4>
         You need to be logged in to see this. Use the navigation links above to
@@ -34,33 +34,46 @@ const Profile = () => {
     );
   }
 
-  return (
-    <div>
-    <div className="flex-row justify-center mb-3">
-      <h2 className="col-12 col-md-10 bg-primary text-light p-3 mb-5">
-        Viewing {userParam ? `${user.username}'s` : 'your'} profile.
-      </h2>
 
-      <div className="col-12 col-md-10 mb-5">
-        <PostList
-          posts={user.posts}
-          title={`${user.username}'s adventures...`}
-          showTitle={false}
-          showUsername={false}
-          customStyles={{ backgroundColor: '#f4f4f4', padding: '20px', borderRadius: '8px' }}
-        />
-      </div>
-      {!userParam && (
-        <div
-          className="col-12 col-md-10 mb-3 p-3"
-          style={{ border: '1px dotted #1a1a1a', backgroundColor: '#f4f4f4', borderRadius: '8px' }}
-        >
+ 
+  return (
+    <div className='max-w[1040px] flex h-screen'>
+      <div className="w-full flex-1 bg-gradient-to-r from-[#6b6e70] via-[#86C232] to-[#86C232] text-[#86C232] relative"
+        style={{
+          backgroundImage: `linear-gradient(to right, rgba(12, 10, 9, 0.8), rgba(12, 10, 9, 0.6)), url('https://i.pinimg.com/564x/00/fb/6b/00fb6ba65cb65b726f49b56f9f94aaff.jpg')`,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className="px-4 py-3 w-full h-full flex flex-col items-center">
+          <h2 className="text-3xl text-[#C5C6C7] mt-8 mb-4">
+            Viewing {userParam ? `${user.username}'s` : 'your'} profile.
+          </h2>
+      
+          <div className="overflow-y-auto">
+            <PostList
+              posts={user.posts}
+              title={`${user.username}'s adventures...`}
+              showTitle={false}
+              showUsername={false}
+              customStyles={{
+                backgroundColor: '#f4f4f4',
+                padding: '20px',
+                borderRadius: '8px',
+              }}
+            />
+          </div>
+          {!userParam && (
+          <div className='flex flex-wrap'>
           <PostForm />
         </div>
-      )}
+        )}
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default Profile;
+
+

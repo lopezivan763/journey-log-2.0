@@ -1,58 +1,50 @@
 import { Link } from 'react-router-dom';
 
-const PostList = ({
-    posts,
-    title,
-    showTitle = true,
-    showUsername = true,
-}) => {
-    if(!posts.length) {
-        return <h3>No Posts Yet</h3>;
-    }
+const PostList = ({ posts, showUsername = true}) => {
+  const limitedPosts = posts.slice(0, 8);
 
-    return (
-      <div className="container d-flex justify-content-center align-items-center">
-        <div className="row">
-          {showTitle && (
-            <h3 className="text-center mb-4">{title}</h3>
-          )}
-          {posts &&
-            posts.map((post) => (
-              <div key={post._id} className="col-lg-6 mb-4">
-                <div className="card bg-dark text-dark">
-                  <h4 className="card-header bg-primary text-dark p-2 m-0">
-                    {showUsername ? (
-                      <Link
-                        className="text-dark"
-                        to={`/profiles/${post.author}`}
-                      >
-                        {post.author} <br />
-                        <span style={{ fontSize: '1rem' }}>
-                          Made this post on {post.createdAt}
-                        </span>
-                      </Link>
-                    ) : (
-                      <span style={{ fontSize: '1rem' }}>
-                        You made this post on {post.createdAt}
+  if (!posts.length) {
+    return <h3>No Posts Yet</h3>;
+  }
+
+  return (
+    <div className='max-w[1040px] h-full'>
+      <div className=" flex justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+          {limitedPosts.map((post) => (
+            <div key={post._id} className="background-color: transparent rounded-lg overflow-hidden shadow-lg transform transition duration-300 hover:scale-105">
+              <div className="p-4">
+                <h4 className="font-bold mb-2">
+                  {showUsername ? (
+                    <Link className="font-bold" 
+                    to={`/profiles/${post.author}`}>
+                      {post.author} <br />
+                      <span className="text-sm text-[#a3a3a3]">
+                        Made this post on {post.createdAt}
                       </span>
-                    )}
-                  </h4>
-                  <div className="card-body bg-secondary p-2">
-                    <h1 className="text-dark">{post.title}</h1>
-                    <h4 className="text-light">{post.body}</h4>
-                  </div>
-                  <Link
-                    className="btn btn-primary btn-block btn-squared"
-                    to={`/posts/${post._id}`}
-                  >
-                    Join the discussion on this journey.
-                  </Link>
-                </div>
+                    </Link>
+                  ) : (
+                    <span className="text-sm text-white">
+                      You made this post on {post.createdAt}
+                    </span>
+                  )}
+                </h4>
+                <h1 className="text-xl font-bold text-white mb-2">
+                  {post.title}</h1>
+                <p>{post.body}</p>
+                <Link
+                  className="block mt-4 py-2 px-4 text-white text-center border border-[#66c232] hover:bg-[#66c232] hover:text-[#0a0a0a] transition duration-300"
+                  to={`/posts/${post._id}`}
+                >
+                  Join Xperience
+                </Link>
               </div>
-            ))}
+            </div>
+          ))}
         </div>
       </div>
-    );
-  };
+      </div>
+  );
+};
 
 export default PostList;

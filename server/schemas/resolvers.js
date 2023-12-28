@@ -20,7 +20,7 @@ const resolvers = {
     },
     posts: async (parent, { username }) => {
       const params = username ? { username } : {};
-      return Post.find(params).sort({ createdAt: -1 });
+      return Post.find(params).sort({ createdAt: -1 }).populate('comments');
     },
   },
   Mutation: {
@@ -72,16 +72,21 @@ const resolvers = {
           _id: postId,
           author: context.user.username,
         });
-
+    
+        if (!post) {
+          throw new Error('Post not found or you are not authorized to delete');
+        }
+    
         await User.findOneAndUpdate(
           { _id: context.user._id },
           { $pull: { posts: post._id } }
         );
-
+    
         return post;
       }
-      throw AuthenticationError;
+      throw new AuthenticationError('You need to be logged in!');
     },
+    
 
     addComment: async (parent, { postId, commentText }, context) => {
       if (context.user) {

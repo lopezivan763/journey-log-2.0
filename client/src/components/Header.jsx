@@ -1,51 +1,129 @@
-import { Link } from 'react-router-dom';
-import { Button } from 'reactstrap';
-import Auth from '../utils/auth';
-import Banner from '../../public/banner.jpg'
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import Auth from "../utils/auth";
+import xLogo from "../assets/logo3.png"; 
+
+import PostForm from '../components/PostForm';
+
+
 
 const Header = () => {
+  const [showMenu, setShowMenu] = useState(false);
+  const [showPostForm, setShowPostForm] = useState(false);
+  
   const logout = (event) => {
     event.preventDefault();
     Auth.logout();
+    window.location.href = '/';
   };
 
-  const headerStyle = {
-    backgroundImage: `linear-gradient(rgba(26, 26, 26, 0.9), rgba(260, 26, 26, 0.1)), url(${Banner})`, 
-    backgroundSize: 'cover', // Ensure the image covers the entire header
-    backgroundRepeat: 'no-repeat', // Do not repeat the image
-    padding: '20px', // Added padding for better spacing
-    position: 'relative', 
-    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)', // Box shadow effect
-    borderRadius: '10px', // Rounded corners for the card
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
+  const togglePostForm = () => {
+    setShowPostForm(!showPostForm);
   };
 
   return (
-    <header className="text-light mb-4 py-3" style={headerStyle}>
-      <div className="container d-flex justify-content-between align-items-center">
-        <div>
-          <Link className="text-decoration-none" to="/">
-            <h1 className="m-0 text-dark">Journey Log</h1>
+    <header className="bg-[#0c0a09]">
+      <div className="max-w[1040px] px-4 p-5 mx-auto flex items-center justify-between lg:px-8">
+        <div className="flex lg:flex-items-center">
+          <Link className="pb-0 mb-0" to="/">
+            <img
+              src={xLogo}
+              alt="Xperience Logo"
+              className="h-auto max-w-[150px] flex flex-wrap"
+            />
           </Link>
-          <p className="m-0 text-dark">Share your travel experience with the world!</p>
         </div>
-        <div>
-          {Auth.loggedIn() ? (
-            <div className="d-flex align-items-center">
-              <Link className="btn btn-lg btn-secondary me-3" to="/me">
-                {Auth.getProfile().data.username}'s Profile
-              </Link>
-              <Button color="danger" size="lg" onClick={logout}>
-                Logout
-              </Button>
-            </div>
-          ) : (
-            <div className="d-flex">
-              <Button color="dark" size="lg" className="me-3" to="/login">
-                Login
-              </Button>
-              <Button color="dark" size="lg" to="/signup">
-                Signup
-              </Button>
+        <div className="relative">
+          <button onClick={toggleMenu} className="text-[#86C232] hover:text-white focus:outline-none">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            </svg>
+          </button>
+          {showMenu && (
+            <div className="absolute top-12 right-0 z-20 bg-[#0c0a09]/90 text-white py-10 px-16 rounded-lg shadow-lg">
+              <button onClick={toggleMenu} className="text-[#86C232] absolute top-3 right-3">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+              {/* Additional menu items */}
+              {Auth.loggedIn() ? (
+                <div className="flex flex-col items-start">
+                  <Link
+                    className="text-[#86C232] hover:text-white font-semibold py-2"
+                    to="/"
+                    onClick={toggleMenu}
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    className="text-[#86C232] hover:text-white font-semibold py-2"
+                    to="/me"
+                    onClick={toggleMenu}
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    className="text-[#86C232] hover:text-white font-semibold py-2"
+                    onClick={togglePostForm}
+                  >
+                    Create
+                  </button>
+                  {showPostForm && <PostForm />}
+
+                  <button
+                    className="text-[#86C232] hover:text-white font-semibold py-2"
+                    onClick={(e) => {
+                      logout(e);
+                      toggleMenu();
+                    }}
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col items-start">
+                  <Link
+                    className="text-[#86C232] hover:text-white font-semibold py-2"
+                    to="/"
+                    onClick={toggleMenu}
+                  >
+                    Home
+                  </Link>
+                  <Link className="text-[#86C232] hover:text-white font-semibold py-2" to="/login" onClick={toggleMenu}>
+                    Login
+                  </Link>
+                  <Link className="text-[#86C232] hover:text-white font-semibold py-2" to="/signup" onClick={toggleMenu}>
+                    Signup
+                  </Link>
+                </div>
+              )}
             </div>
           )}
         </div>
