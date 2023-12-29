@@ -26,7 +26,7 @@ const Home = () => {
               sequence={[
                 "Travel...",
                 2000,
-                "Experience...",
+                "Xperience...",
                 2000,
                 "Discover...",
                 2000,
