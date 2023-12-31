@@ -12,7 +12,7 @@
     "build": "cd client && npm run build"
   },
   "dependencies": {
-    "concurrently": "^8.2.0",
+    "concurrently": "^8.2.2",
     "dotenv": "^16.3.1"
   }
 }
