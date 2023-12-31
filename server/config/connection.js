@@ -1,17 +1,8 @@
-const mongoose = require('mongoose');
 require('dotenv').config();
+const mongoose = require('mongoose');
 
-const mongoURI = process.env.MONGO_URI;
-
-mongoose.connect(
- mongoURI,
-  { useNewUrlParser: true, useUnifiedTopology: true }
-)
-.then(() => {
-  console.log('Connected to MongoDB');
-})
-.catch((err) => {
-  console.error('Error connecting to MongoDB:', err);
-});
+mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/journey-log');
 
 module.exports = mongoose.connection;
+
+// || 'mongodb://127.0.0.1:27017/journey-log'
