@@ -7,7 +7,7 @@ const Home = () => {
   const { loading, data } = useQuery(QUERY_POSTS);
   const posts = data?.posts || [];
 
-  const limitedPosts = posts.slice(0, 5);
+  const limitedPosts = posts.slice(0, 10);
 
   return (
     <div className="max-w[1040px] mx-auto">

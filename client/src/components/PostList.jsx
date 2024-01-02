@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 const PostList = ({ posts, showUsername = true}) => {
-  const limitedPosts = posts.slice(0, 8);
+  const limitedPosts = posts.slice(0, 10);
 
   if (!posts.length) {
     return <h3>No Posts Yet</h3>;

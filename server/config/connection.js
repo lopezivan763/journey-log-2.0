@@ -11,5 +11,3 @@ mongoose.connect("mongodb+srv://lopezivan763:o22n3NsIW3dlEFdr@cluster0.fqknf1f.m
 
 
 module.exports = mongoose.connection;
-
-// || 'mongodb://127.0.0.1:27017/journey-log'
