@@ -45,6 +45,3 @@ const startApolloServer = async () => {
 };
 
 startApolloServer();
-
-
-// trying to push to heroku
