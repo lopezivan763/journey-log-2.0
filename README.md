@@ -1,4 +1,4 @@
-# journey-log-2.0
+# Journey Log 2.0
 
 ## Table of Contents
 - [Description](#description)
@@ -11,11 +11,15 @@
 
 ## Description 
 
-Journey Log 2.0 is a React application that uses a number of different node packages and technologies. It uses GraphQL, @apollo/server, react-strap, Bootstrap, Vite, Express, bcrypt, JWT tokens, Nodemon, and Mongoose.
+Journey Log 2.0 is a dynamic React application designed for travelers to share and explore travel experiences. Users can easily sign up, log in, and create posts about their journeys, including titles and detailed descriptions. Each post is visible to other users, who can comment and provide recommendations on activities, places to visit, and dining options. The application offers a streamlined interface for managing posts and comments through user profiles, fostering a community of travel enthusiasts sharing valuable insights and tips.
 
 ## Usage
 
-To use this web application, first you must create a user. The signup button at the top brings you to a signup form page. Once you are signed in, you will be able to log in again after you logout. When a login is created, it will show the form to create a journey. This includes a text input section for the title as well as the body. There are character limits for both up to 280 characters. Once the user has made a post, they are then able to see all of their posts and also make a comment on the post. Other users are able to see your posts and make comments on them. The objective is for a user to go on a vacation and get recommendations on things to do, places to see, what to eat, etc. The user can see all of the posts and comments when they go to their profile and click on a post.
+- **Create an Account**: Click the signup button at the top to register.
+- **Login**: After signing up, you can log in anytime.
+- **Create a Journey**: Once logged in, create a journey by filling out a form with a title and body, each limited to 280 characters.
+- **View and Comment**: View your posts and others' posts, and leave comments. Share recommendations on activities, sights, food, and more.
+- **Profile Management**: Access all posts and comments through your profile.
 
 ## License
 
@@ -96,7 +100,8 @@ To use this web application, first you must create a user. The signup button at 
 - **Nodemon**: A tool that helps develop Node.js based applications by automatically restarting the node application when file changes in the directory are detected.
 
 ## Site Link
-[https://social-tast-app-bbbf51cc09c5.herokuapp.com/](https://social-tast-app-bbbf51cc09c5.herokuapp.com/)
+
+[Journey Log 2.0](https://social-tast-app-bbbf51cc09c5.herokuapp.com/)
 
 ## Dummy Login
 
@@ -106,4 +111,4 @@ To use this web application, first you must create a user. The signup button at 
 
 ## Repository
 
-[https://github.com/lopezivan763/journey-log-2.0](https://github.com/lopezivan763/journey-log-2.0)
+[Journey Log 2.0 Repository](https://github.com/lopezivan763/journey-log-2.0)
